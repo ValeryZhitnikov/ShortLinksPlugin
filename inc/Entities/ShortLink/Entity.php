@@ -9,7 +9,7 @@ class Entity implements RegisterEntity
     register_post_type(Constants::ENTITY_LABEL, [
       'label' => Constants::ENTITY_LABEL,
       'labels' => [
-          'name'          => Constants::SINGULAR_NAME,
+          'name'          => Constants::ENTITY_NAME,
           'singular_name' => Constants::SINGULAR_NAME,
       ],
       'supports'     => ['title'],
