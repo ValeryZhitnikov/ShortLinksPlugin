@@ -7,4 +7,6 @@ abstract class Constants {
 	public const string ENTITY_LABEL = 'shortlink';
 	public const string ENTITY_NAME = 'Short Links';
 	public const string SINGULAR_NAME = 'Short Link';
+	public const string MENU_ICON = 'dashicons-admin-links';
+	public const string TARGET_URL_META_FIELD = '_target_url';
 }
