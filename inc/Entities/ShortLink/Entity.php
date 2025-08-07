@@ -1,6 +1,7 @@
 <?php 
 
 namespace ShortLinks\Entities\ShortLink;
+
 use ShortLinks\Interfaces\RegisterEntity;
 class Entity implements RegisterEntity
 {

@@ -4,6 +4,7 @@ namespace ShortLinks\Hooks;
 
 use ShortLinks\Services\RegisterPostType;
 use ShortLinks\Services\RegisterMetaBoxes;
+use ShortLinks\Services\RegisterColumns;
 
 class InitHook 
 {
@@ -12,6 +13,7 @@ class InitHook
       foreach ( $config['entities'] as $entityName ) {
         RegisterPostType::registerEntities($entityName);
         RegisterMetaBoxes::registerMetaboxes($entityName);
+        RegisterColumns::registerColumns($entityName);
       }
     }
   }

@@ -22,6 +22,7 @@ class Shortlink extends Singleton
     add_action( 'init', function (): void {
       InitHook::init($this->config);
     });
+    
   }
   
 }
