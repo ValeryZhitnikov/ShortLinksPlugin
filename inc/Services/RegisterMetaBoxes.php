@@ -6,7 +6,7 @@ class RegisterMetaBoxes
 {
   public static function registerMetaboxes( string $entityName ): void {
 		$entity = "ShortLinks\\Entities\\$entityName\\Fields";
-    if ( class_exists( $entity ) ) {
+    if ( !class_exists( $entity ) ) {
       return;
     }
 
