@@ -8,16 +8,20 @@ use ShortLinks\Hooks\InitHook;
 
 class Shortlink extends Singleton 
 {
-
-  protected function __construct()
-  {
+  private array $config;
+  protected function __construct( array $config ) {
+    $this->config = $config;
     $this->init();
   }
 
-  private function init(): void
-  {
-      register_activation_hook(__FILE__, [ActivationHook::class, 'activate']);
-      add_action('init', [InitHook::class, 'init']);
+  private function init(): void {
+    register_activation_hook(__FILE__, function (): void {
+      ActivationHook::activate($this->config);
+    });
+
+    add_action( 'init', function (): void {
+      InitHook::init($this->config);
+    });
   }
   
 }

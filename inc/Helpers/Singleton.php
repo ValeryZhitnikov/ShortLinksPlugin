@@ -8,9 +8,9 @@ abstract class Singleton
 	private function __construct() {
 	}
 
-	public static function get_instance(): Singleton {
+	public static function get_instance(...$args): Singleton {
 		if ( ! isset( self::$instances[ static::class ] ) ) {
-			self::$instances[ static::class ] = new static();
+			self::$instances[ static::class ] = new static(...$args);
 		}
 
 		return self::$instances[ static::class ];
