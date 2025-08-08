@@ -15,7 +15,7 @@ class Entity implements RegisterEntity
       'supports'     => ['title'],
       'has_archive'  => true,
       'menu_icon'    => Constants::MENU_ICON,
-      'public' => false,
+      'public' => true,
       'show_ui' => current_user_can('edit_others_posts'),
       'capability_type' => 'post',
       'capabilities' => [
