@@ -22,6 +22,7 @@ class Fields implements RegisterFields
 
   public static function renderMetaBox($post): void {
     $target_url = get_post_meta($post->ID, Constants::TARGET_URL_META_FIELD, true);
+    $close = get_post_meta($post->ID, Constants::CLOSE_META_FIELD, true);
 
     $nonce_field = wp_nonce_field(
       Constants::ENTITY_LABEL . '_save_meta_box',
@@ -32,14 +33,18 @@ class Fields implements RegisterFields
 
     $html = <<<HTML
       $nonce_field
-      <label for="%1\$s">Target URL:</label><br />
+      <p><label for="%1\$s">Target URL:</label></p>
       <input type="url" id="%1\$s" name="%1\$s" value="%2\$s" style="width:100%%;" />
+      <p><label for="%3\$s">Close</label></p>
+      <input type="checkbox" id="%3\$s" name="%3\$s" %4\$s />
       HTML;
 
     echo sprintf(
       $html,
       Constants::TARGET_URL_META_FIELD,
-      esc_attr($target_url)
+      esc_attr($target_url),
+      Constants::CLOSE_META_FIELD,
+      checked( 'close', $close, false )
     );
   }
 
@@ -62,6 +67,17 @@ class Fields implements RegisterFields
       if (filter_var($target_url, FILTER_VALIDATE_URL)) {
         update_post_meta($post_id, Constants::TARGET_URL_META_FIELD, $target_url);
       }
+    }
+
+    if (isset($_POST[Constants::CLOSE_META_FIELD])) {
+      $value = $_POST[Constants::CLOSE_META_FIELD];
+      update_post_meta($post_id, Constants::CLOSE_META_FIELD, $value);
+    }
+
+    if ( isset( $_POST[Constants::CLOSE_META_FIELD] ) && 'on' == $_POST[Constants::CLOSE_META_FIELD] ) {
+      update_post_meta( $post_id, Constants::CLOSE_META_FIELD, 'close' );
+    } else {
+      delete_post_meta( $post_id, Constants::CLOSE_META_FIELD );
     }
   }
 }

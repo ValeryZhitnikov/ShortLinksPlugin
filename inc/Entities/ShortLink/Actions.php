@@ -14,8 +14,16 @@ class Actions
       if (is_singular(Constants::ENTITY_LABEL)) {
         global $post;
         $target_url = get_post_meta($post->ID, Constants::TARGET_URL_META_FIELD, true);
-        if ( $target_url ) {
+        $close = get_post_meta($post->ID, Constants::CLOSE_META_FIELD, true);
+        if ( $target_url && ! $close ) {
           wp_redirect($target_url, 301);
+          exit;
+        } else {
+          global $wp_query;
+          $wp_query->set_404();
+          status_header(404);
+          nocache_headers();
+          include(get_query_template('404'));
           exit;
         }
       }
