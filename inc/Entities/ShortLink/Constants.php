@@ -10,4 +10,5 @@ abstract class Constants {
 	public const string MENU_ICON = 'dashicons-admin-links';
 	public const string TARGET_URL_META_FIELD = '_target_url';
 	public const string CLOSE_META_FIELD = '_close_link';
+	public const string CLOSE_DATE_META_FIELD = '_close_link_date';
 }

@@ -23,6 +23,8 @@ class Fields implements RegisterFields
   public static function renderMetaBox($post): void {
     $target_url = get_post_meta($post->ID, Constants::TARGET_URL_META_FIELD, true);
     $close = get_post_meta($post->ID, Constants::CLOSE_META_FIELD, true);
+    $close_date = get_post_meta($post->ID, Constants::CLOSE_DATE_META_FIELD, true);
+    $close_date_info = $close_date ? 'Ссылка деактивирована - '. $close_date : '';
 
     $nonce_field = wp_nonce_field(
       Constants::ENTITY_LABEL . '_save_meta_box',
@@ -36,7 +38,7 @@ class Fields implements RegisterFields
       <p><label for="%1\$s">Target URL:</label></p>
       <input type="url" id="%1\$s" name="%1\$s" value="%2\$s" style="width:100%%;" />
       <p><label for="%3\$s">Close</label></p>
-      <input type="checkbox" id="%3\$s" name="%3\$s" %4\$s />
+      <input type="checkbox" id="%3\$s" name="%3\$s" %4\$s />%5\$s
       HTML;
 
     echo sprintf(
@@ -44,7 +46,8 @@ class Fields implements RegisterFields
       Constants::TARGET_URL_META_FIELD,
       esc_attr($target_url),
       Constants::CLOSE_META_FIELD,
-      checked( 'close', $close, false )
+      checked( 'close', $close, false ),
+      $close_date_info
     );
   }
 
@@ -75,9 +78,12 @@ class Fields implements RegisterFields
     }
 
     if ( isset( $_POST[Constants::CLOSE_META_FIELD] ) && 'on' == $_POST[Constants::CLOSE_META_FIELD] ) {
+      $date_current = date('d.m.Y');
       update_post_meta( $post_id, Constants::CLOSE_META_FIELD, 'close' );
+      update_post_meta( $post_id, Constants::CLOSE_DATE_META_FIELD, $date_current );
     } else {
       delete_post_meta( $post_id, Constants::CLOSE_META_FIELD );
+      delete_post_meta( $post_id, Constants::CLOSE_DATE_META_FIELD );
     }
   }
 }
