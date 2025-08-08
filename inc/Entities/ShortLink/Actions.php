@@ -15,7 +15,17 @@ class Actions
         global $post;
         $target_url = get_post_meta($post->ID, Constants::TARGET_URL_META_FIELD, true);
         $close = get_post_meta($post->ID, Constants::CLOSE_META_FIELD, true);
-        if ( $target_url && ! $close ) {
+        if ($target_url && ! $close) {
+         
+          $utm_params = array_filter($_GET, function($key) {
+              return strpos($key, 'utm_') === 0;
+          }, ARRAY_FILTER_USE_KEY);
+
+          if (!empty($utm_params)) {
+              $new_query = http_build_query($utm_params);
+              $target_url .= '?' . $new_query;
+          }
+
           wp_redirect($target_url, 301);
           exit;
         } else {
