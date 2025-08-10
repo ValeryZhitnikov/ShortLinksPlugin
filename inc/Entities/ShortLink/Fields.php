@@ -25,6 +25,8 @@ class Fields implements RegisterFields
     $close = get_post_meta($post->ID, Constants::CLOSE_META_FIELD, true);
     $close_date = get_post_meta($post->ID, Constants::CLOSE_DATE_META_FIELD, true);
     $close_date_info = $close_date ? 'Ссылка деактивирована - '. $close_date : '';
+    $total_clicks = (int) get_post_meta($post->ID, Constants::TOTAL_CLICK_META_FIELD, true);
+    $unique_clicks = (int) get_post_meta($post->ID, Constants::UNIQUE_CLICK_META_FIELD, true);
 
     $nonce_field = wp_nonce_field(
       Constants::ENTITY_LABEL . '_save_meta_box',
@@ -39,6 +41,8 @@ class Fields implements RegisterFields
       <input type="url" id="%1\$s" name="%1\$s" value="%2\$s" style="width:100%%;" />
       <p><label for="%3\$s">Close</label></p>
       <input type="checkbox" id="%3\$s" name="%3\$s" %4\$s />%5\$s
+      <p><strong>Общее количество переходов:</strong> %6\$d</p>
+      <p><strong>Количество уникальных переходов:</strong> %7\$d</p>
       HTML;
 
     echo sprintf(
@@ -47,7 +51,9 @@ class Fields implements RegisterFields
       esc_attr($target_url),
       Constants::CLOSE_META_FIELD,
       checked( 'close', $close, false ),
-      $close_date_info
+      $close_date_info,
+      $total_clicks,
+      $unique_clicks
     );
   }
 

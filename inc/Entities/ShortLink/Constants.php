@@ -10,6 +10,9 @@ abstract class Constants {
 	public const string MENU_ICON = 'dashicons-admin-links';
 	public const string TARGET_URL_META_FIELD = '_target_url';
 	public const string CLOSE_META_FIELD = '_close_link';
+	public const string TOTAL_CLICK_META_FIELD = '_click_count';
+	public const string UNIQUE_CLICK_META_FIELD = '_unique_click_count';
 	public const string CLOSE_DATE_META_FIELD = '_close_link_date';
-	public const string SHOW_LINK_SHORTCODE_NAME = 'shortlink_form';
+	public const string SHOW_LINK_SHORTCODE_NAME = self::ENTITY_LABEL . '_form';
+	public const string SESSION_KEY_PREFIX = self::ENTITY_LABEL . '_last_click_';
 }
