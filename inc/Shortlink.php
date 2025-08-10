@@ -5,6 +5,7 @@ namespace ShortLinks;
 use ShortLinks\Helpers\Singleton;
 use ShortLinks\Hooks\ActivationHook;
 use ShortLinks\Hooks\InitHook;
+use ShortLinks\Shortcodes;
 
 class Shortlink extends Singleton 
 {
@@ -21,6 +22,7 @@ class Shortlink extends Singleton
 
     add_action( 'init', function (): void {
       InitHook::init($this->config);
+      Shortcodes::register();
     });
     
   }
