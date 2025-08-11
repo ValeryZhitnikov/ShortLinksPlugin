@@ -3,6 +3,7 @@
 namespace ShortLinks;
 
 use ShortLinks\Entities\ShortLink\Constants as ShortLinkConstants;
+use ShortLinks\Config;
 
 class Shortcodes 
 {
@@ -13,8 +14,8 @@ class Shortcodes
   public static function showLink(array $atts): string {
 
     $templates = [
-      'error'   => '<div class="shortlink-error">Ошибка: передан неверный ID ссылки.</div>',
-      'closed'  => '<div class="shortlink-closed">Ссылка деактивирована с %s. </div>',
+      'error'   => '<div class="shortlink-error">' . __('Error: invalid link ID provided.', Config::getTextDomain()) . '</div>',
+      'closed'  => '<div class="shortlink-closed">' . __('Link deactivated since', Config::getTextDomain()) . ' %s. </div>',
       'general' => '<a href="%s">%s</a>',
     ];
     

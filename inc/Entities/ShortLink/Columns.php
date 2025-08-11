@@ -2,15 +2,17 @@
 
 namespace ShortLinks\Entities\ShortLink;
 
+use ShortLinks\Config;
+
 class Columns
 {
   public static function addColumns($columns): array {
-    $columns['url'] = 'URL';
-    $columns['target_url'] = 'Target URL';
-    $columns['close'] = 'Close';
-    $columns['close_date'] = 'Close date';
-    $columns['click_count'] = 'Всего переходов';
-    $columns['unique_click_count'] = 'Уникальные переходы';
+    $columns['url'] = __('URL', Config::getTextDomain());
+    $columns['target_url'] = __('Target URL', Config::getTextDomain());
+    $columns['close'] = __('Close', Config::getTextDomain());
+    $columns['close_date'] = __('Close date', Config::getTextDomain());
+    $columns['click_count'] = __('All clicks', Config::getTextDomain());
+    $columns['unique_click_count'] = __('Unique clicks', Config::getTextDomain());
 	  return $columns;
   }
 

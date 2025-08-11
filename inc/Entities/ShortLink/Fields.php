@@ -2,6 +2,7 @@
 
 namespace ShortLinks\Entities\ShortLink;
 use ShortLinks\Interfaces\RegisterFields;
+use ShortLinks\Config;
 
 class Fields implements RegisterFields
 {
@@ -12,7 +13,7 @@ class Fields implements RegisterFields
 
     add_meta_box(
       'short_link_meta',
-      'Link info',
+      __('Link info', Config::getTextDomain()),
       [self::class, 'renderMetaBox'],
       Constants::ENTITY_LABEL,              
       'normal',
@@ -24,7 +25,7 @@ class Fields implements RegisterFields
     $target_url = get_post_meta($post->ID, Constants::TARGET_URL_META_FIELD, true);
     $close = get_post_meta($post->ID, Constants::CLOSE_META_FIELD, true);
     $close_date = get_post_meta($post->ID, Constants::CLOSE_DATE_META_FIELD, true);
-    $close_date_info = $close_date ? 'Ссылка деактивирована - '. $close_date : '';
+    $close_date_info = $close_date ? __('Link deactivated', Config::getTextDomain()) . ' - '. $close_date  : '';
     $total_clicks = (int) get_post_meta($post->ID, Constants::TOTAL_CLICK_META_FIELD, true);
     $unique_clicks = (int) get_post_meta($post->ID, Constants::UNIQUE_CLICK_META_FIELD, true);
 
@@ -37,12 +38,12 @@ class Fields implements RegisterFields
 
     $html = <<<HTML
       $nonce_field
-      <p><label for="%1\$s">Target URL:</label></p>
+      <p><label for="%1\$s">%8\$s</label></p>
       <input type="url" id="%1\$s" name="%1\$s" value="%2\$s" style="width:100%%;" />
-      <p><label for="%3\$s">Close</label></p>
+      <p><label for="%3\$s">%9\$s</label></p>
       <input type="checkbox" id="%3\$s" name="%3\$s" %4\$s />%5\$s
-      <p><strong>Общее количество переходов:</strong> %6\$d</p>
-      <p><strong>Количество уникальных переходов:</strong> %7\$d</p>
+      <p><strong>%10\$s:</strong> %6\$d</p>
+      <p><strong>%11\$s:</strong> %7\$d</p>
       HTML;
 
     echo sprintf(
@@ -50,10 +51,14 @@ class Fields implements RegisterFields
       Constants::TARGET_URL_META_FIELD,
       esc_attr($target_url),
       Constants::CLOSE_META_FIELD,
-      checked( 'close', $close, false ),
+      checked('close', $close, false),
       $close_date_info,
       $total_clicks,
-      $unique_clicks
+      $unique_clicks,
+      __('Target URL', Config::getTextDomain()),
+      __('Close', Config::getTextDomain()),
+      __('Total clicks', Config::getTextDomain()),
+      __('Unique clicks', Config::getTextDomain())
     );
   }
 
