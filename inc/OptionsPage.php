@@ -5,6 +5,9 @@ use ShortLinks\Config;
 
 class OptionsPage
 {
+  private const string OPTIONS_PAGE_SLUG = 'shortlinks-settings';
+  private const string SETTING_GROUP = 'shortlinks_settings_group';
+  private const string SETTING_SECTION = 'shortlinks_main_section';
   public static function register(): void
   {
     add_action('admin_menu', [self::class, 'addMenuPage']);
@@ -17,32 +20,32 @@ class OptionsPage
       __('Short Links Settings', Config::getTextDomain()),
       __('Short Links', Config::getTextDomain()),
       'manage_options',
-      'shortlinks-settings',
+      self::OPTIONS_PAGE_SLUG,
       [self::class, 'renderSettingsPage']
     );
   }
 
   public static function registerSettings(): void
   {
-    register_setting('shortlinks_settings_group', Config::CLICK_TIME_OFFSET_OPTION, [
+    register_setting(self::SETTING_GROUP, Config::CLICK_TIME_OFFSET_OPTION, [
       'type'              => 'integer',
       'sanitize_callback' => 'absint',
       'default'           => Config::getUniqueClicksTimeOffset(),
     ]);
 
     add_settings_section(
-      'shortlinks_main_section',
+      self::SETTING_SECTION,
       __('General Settings', Config::getTextDomain()),
       null,
-      'shortlinks-settings'
+      self::OPTIONS_PAGE_SLUG
     );
 
     add_settings_field(
-      'shortlinks_click_offset',
+      Config::CLICK_TIME_OFFSET_OPTION,
       __('Unique Click Time Offset (minutes)', Config::getTextDomain()),
       [self::class, 'clickOffsetField'],
-      'shortlinks-settings',
-      'shortlinks_main_section'
+      self::OPTIONS_PAGE_SLUG,
+      self::SETTING_SECTION
     );
   }
 
@@ -65,8 +68,8 @@ class OptionsPage
       <form method="post" action="options.php">
     HTML;
 
-    settings_fields('shortlinks_settings_group');
-    do_settings_sections('shortlinks-settings');
+    settings_fields(self::SETTING_GROUP);
+    do_settings_sections(self::OPTIONS_PAGE_SLUG);
     submit_button();
 
     echo <<<HTML
