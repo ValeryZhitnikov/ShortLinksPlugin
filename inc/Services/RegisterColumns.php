@@ -30,5 +30,13 @@ class RegisterColumns
     } else {
       error_log( "Class $entityColumns must have a static fillColumns() method." );
     }
+
+    if (method_exists($entityColumns, 'sortableColumns')) {
+      add_filter("manage_edit-{$label}_sortable_columns", [$entityColumns, 'sortableColumns']);
+    }
+
+    if (method_exists($entityColumns, 'orderby')) {
+      add_action('pre_get_posts', [$entityColumns, 'orderby']);
+    }
 	}
 }

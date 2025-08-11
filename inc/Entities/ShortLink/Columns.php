@@ -9,6 +9,8 @@ class Columns
     $columns['target_url'] = 'Target URL';
     $columns['close'] = 'Close';
     $columns['close_date'] = 'Close date';
+    $columns['click_count'] = 'Всего переходов';
+    $columns['unique_click_count'] = 'Уникальные переходы';
 	  return $columns;
   }
 
@@ -34,6 +36,50 @@ class Columns
         $close_date = get_post_meta($post_id, Constants::CLOSE_DATE_META_FIELD, true);
         echo esc_html($close_date);
         break;
+
+      case 'click_count':
+        $click_count = (int) get_post_meta($post_id, '_click_count', true);
+        echo $click_count;
+        break;
+
+      case 'unique_click_count':
+        $unique_click_count = (int) get_post_meta($post_id, '_unique_click_count', true);
+        echo $unique_click_count;
+        break;
+    }
+  }
+
+  public static function sortableColumns(array $columns): array {
+    $columns['click_count'] = 'click_count';
+    $columns['unique_click_count'] = 'unique_click_count';
+    return $columns;
+  }
+
+  public static function orderby( $query ): void {
+    if ( ! is_admin() ) {
+      return;
+    }
+
+    $orderby = $query->get('orderby');
+    $post_type = $query->get('post_type');
+
+    if ( $post_type !== Constants::ENTITY_LABEL ) {
+      return;
+    }
+
+    if ( in_array($orderby, ['click_count', 'unique_click_count'], true) ) {
+      switch ( $orderby ) {
+        case 'click_count':
+          $meta_key = Constants::TOTAL_CLICK_META_FIELD;
+          break;
+        case 'unique_click_count':
+          $meta_key = Constants::UNIQUE_CLICK_META_FIELD;
+          break;
+        default:
+          $meta_key = Constants::TOTAL_CLICK_META_FIELD;
+      }
+      $query->set('meta_key', $meta_key);
+      $query->set('orderby', 'meta_value_num');
     }
   }
 }
