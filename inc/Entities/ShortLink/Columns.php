@@ -38,12 +38,12 @@ class Columns
         break;
 
       case 'click_count':
-        $click_count = (int) get_post_meta($post_id, '_click_count', true);
+        $click_count = (int) get_post_meta($post_id, Constants::TOTAL_CLICK_META_FIELD, true);
         echo $click_count;
         break;
 
       case 'unique_click_count':
-        $unique_click_count = (int) get_post_meta($post_id, '_unique_click_count', true);
+        $unique_click_count = (int) get_post_meta($post_id, Constants::UNIQUE_CLICK_META_FIELD, true);
         echo $unique_click_count;
         break;
     }
