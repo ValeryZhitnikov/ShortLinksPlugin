@@ -7,7 +7,7 @@ use ShortLinks\Config;
 
 class Shortcodes 
 {
-  public static function register() {
+  public static function register(): void {
     add_shortcode( ShortLinkConstants::SHOW_LINK_SHORTCODE_NAME, [self::class, 'showLink'] );
   }
 

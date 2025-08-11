@@ -6,6 +6,7 @@ use ShortLinks\Helpers\Singleton;
 use ShortLinks\Hooks\ActivationHook;
 use ShortLinks\Hooks\InitHook;
 use ShortLinks\Shortcodes;
+use ShortLinks\OptionsPage;
 
 class Shortlink extends Singleton 
 {
@@ -22,6 +23,7 @@ class Shortlink extends Singleton
     add_action( 'init', function (): void {
       InitHook::init();
       Shortcodes::register();
+      OptionsPage::register();
     });
   }
   
