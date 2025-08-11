@@ -12,7 +12,7 @@ class Fields implements RegisterFields
     }
 
     add_meta_box(
-      'short_link_meta',
+      Constants::META_BOX_ID,
       __('Link info', Config::getTextDomain()),
       [self::class, 'renderMetaBox'],
       Constants::ENTITY_LABEL,              
@@ -89,8 +89,8 @@ class Fields implements RegisterFields
     }
 
     if ( isset( $_POST[Constants::CLOSE_META_FIELD] ) && 'on' == $_POST[Constants::CLOSE_META_FIELD] ) {
-      $date_current = date('d.m.Y');
-      update_post_meta( $post_id, Constants::CLOSE_META_FIELD, 'close' );
+      $date_current = date(Constants::CLOSE_DATE_SAVE_FORMAT);
+      update_post_meta( $post_id, Constants::CLOSE_META_FIELD, Constants::CLOSE_META_VALUE );
       update_post_meta( $post_id, Constants::CLOSE_DATE_META_FIELD, $date_current );
     } else {
       delete_post_meta( $post_id, Constants::CLOSE_META_FIELD );
