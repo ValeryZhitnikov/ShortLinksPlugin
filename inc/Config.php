@@ -14,11 +14,11 @@ class Config
 
     public static function getUniqueClicksTimeOffset(): int
     {
-        return (int) get_option('shortlinks_unic_clicks_time_offset', self::UNIC_CLICKS_TIME_OFFSET_DEFAULT);
+        return get_option('shortlinks_unic_clicks_time_offset', self::UNIC_CLICKS_TIME_OFFSET_DEFAULT);
     }
 
     public static function getTextDomain(): string
     {
-        return self::TEXT_DOMAIN_DEFAULT;
+        return self::TEXT_DOMAIN;
     }
 }
