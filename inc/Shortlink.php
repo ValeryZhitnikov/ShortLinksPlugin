@@ -10,21 +10,19 @@ use ShortLinks\Shortcodes;
 class Shortlink extends Singleton 
 {
   private array $config;
-  protected function __construct( array $config ) {
-    $this->config = $config;
+  protected function __construct() {
     $this->init();
   }
 
   private function init(): void {
     register_activation_hook(__FILE__, function (): void {
-      ActivationHook::activate($this->config);
+      ActivationHook::activate();
     });
 
     add_action( 'init', function (): void {
-      InitHook::init($this->config);
+      InitHook::init();
       Shortcodes::register();
     });
-    
   }
   
 }

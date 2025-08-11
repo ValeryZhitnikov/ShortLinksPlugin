@@ -3,12 +3,14 @@
 namespace ShortLinks\Entities\ShortLink;
 
 use ShortLinks\Entities\ShortLink\Constants;
+use ShortLinks\Config;
 
 class Actions
-{
+{ 
   public static function register(): void {
     self::addRedirects();
   }
+  
   public static function addRedirects(): void {
     add_action('template_redirect', function() {
       if ( is_singular(Constants::ENTITY_LABEL) ) {
@@ -40,7 +42,7 @@ class Actions
           $last_click_time = $_SESSION[$session_key] ?? 0;
           $now = time();
 
-          if (($now - $last_click_time) > MINUTE_IN_SECONDS * 2) {
+          if (($now - $last_click_time) > MINUTE_IN_SECONDS * Config::getUniqueClicksTimeOffset()) {
               $unique_clicks = (int) get_post_meta($post_id, Constants::UNIQUE_CLICK_META_FIELD, true);
               update_post_meta($post_id, Constants::UNIQUE_CLICK_META_FIELD, $unique_clicks + 1);
 

@@ -26,7 +26,7 @@ class Shortcodes
     
     $text = isset($atts['text']) ? sanitize_text_field($atts['text']) : '';
 
-    if ( !$id || get_post_type($id) !== 'shortlink' ) {
+    if ( !$id || get_post_type($id) !== ShortLinkConstants::ENTITY_LABEL ) {
       return $templates['error'];
     }
 
