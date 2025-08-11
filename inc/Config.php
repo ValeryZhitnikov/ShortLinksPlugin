@@ -3,9 +3,9 @@ namespace ShortLinks;
 
 class Config
 {
-    public const ENTITIES = ['ShortLink'];
-    private const TEXT_DOMAIN = 'short-links';
-    private const UNIC_CLICKS_TIME_OFFSET_DEFAULT = 2;
+    public const array ENTITIES = ['ShortLink'];
+    private const string TEXT_DOMAIN = 'short-links';
+    private const int UNIC_CLICKS_TIME_OFFSET_DEFAULT = 2;
 
     public static function getEntities(): array
     {
