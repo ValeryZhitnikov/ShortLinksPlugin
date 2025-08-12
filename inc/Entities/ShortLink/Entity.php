@@ -3,6 +3,7 @@
 namespace ShortLinks\Entities\ShortLink;
 
 use ShortLinks\Interfaces\RegisterEntity;
+use ShortLinks\Config;
 
 /**
  * Class Entity
@@ -41,6 +42,9 @@ class Entity implements RegisterEntity
           'publish_posts'       => 'publish_posts',
           'read_private_posts'  => 'read_private_posts',
       ],
+      'rewrite'     => [
+        'slug' => Config::getShortLinksPrefix()
+      ]
     ]);
   }
 }

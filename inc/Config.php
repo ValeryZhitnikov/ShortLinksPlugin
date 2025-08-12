@@ -24,6 +24,8 @@ class Config
   private const string TEXT_DOMAIN = 'short-links';
   private const int UNIC_CLICKS_TIME_OFFSET_DEFAULT = 2;
   public const string CLICK_TIME_OFFSET_OPTION = 'shortlinks_unic_clicks_time_offset';
+  public const string PREFIX_SHORTLINK_OPTION = 'shortlinks_prefix';
+  public const string PREFIX_SHORTLINK_DEFAULT = 'shortlinks';
 
   /**
    * Returns the list of registered entity names used by the plugin.
@@ -54,6 +56,17 @@ class Config
   public static function getUniqueClicksTimeOffset(): int
   {
     return get_option(self::CLICK_TIME_OFFSET_OPTION, self::UNIC_CLICKS_TIME_OFFSET_DEFAULT);
+  }
+
+  /**
+   * Returns the short links prefix from plugin settings.
+   * Falls back to the default if not set.
+   *
+   * @return string Prefix for short links.
+   */
+  public static function getShortLinksPrefix(): string
+  {
+    return get_option(self::PREFIX_SHORTLINK_OPTION, self::PREFIX_SHORTLINK_DEFAULT);
   }
 
   /**

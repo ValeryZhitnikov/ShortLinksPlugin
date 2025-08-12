@@ -65,6 +65,12 @@ class OptionsPage
       'default'           => Config::getUniqueClicksTimeOffset(),
     ]);
 
+    register_setting(self::SETTING_GROUP, Config::PREFIX_SHORTLINK_OPTION, [
+      'type'              => 'string',
+      'sanitize_callback' => 'sanitize_text_field',
+      'default'           =>  Config::getShortLinksPrefix()
+    ]);
+
     add_settings_section(
       self::SETTING_SECTION,
       __('General Settings', Config::getTextDomain()),
@@ -76,6 +82,14 @@ class OptionsPage
       Config::CLICK_TIME_OFFSET_OPTION,
       __('Unique Click Time Offset (minutes)', Config::getTextDomain()),
       [self::class, 'clickOffsetField'],
+      self::OPTIONS_PAGE_SLUG,
+      self::SETTING_SECTION
+    );
+
+    add_settings_field(
+      Config::PREFIX_SHORTLINK_OPTION,
+      __('Prefix for shortlinks', Config::getTextDomain()),
+      [self::class, 'prefixField'],
       self::OPTIONS_PAGE_SLUG,
       self::SETTING_SECTION
     );
@@ -93,6 +107,22 @@ class OptionsPage
     echo sprintf(
       $html,
       Config::CLICK_TIME_OFFSET_OPTION,
+      esc_attr($value)
+    );
+  }
+
+  /**
+   * Outputs the input field for the "Prefix for shortlinks" setting.
+   *
+   * @return void
+   */
+  public static function prefixField(): void
+  {
+    $value = Config::getShortLinksPrefix();
+    $html = '<input type="string" name="%s" value="%s" />';
+    echo sprintf(
+      $html,
+      Config::PREFIX_SHORTLINK_OPTION,
       esc_attr($value)
     );
   }
