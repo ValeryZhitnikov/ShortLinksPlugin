@@ -6,7 +6,10 @@ use ShortLinks\Services\RegisterPostType;
 use ShortLinks\Services\RegisterMetaBoxes;
 use ShortLinks\Services\RegisterColumns;
 use ShortLinks\Services\RegisterActions;
+use ShortLinks\Services\RegisterBlock;
 use ShortLinks\Config;
+use ShortLinks\Shortcodes;
+use ShortLinks\OptionsPage;
 
 /**
  * Class InitHook
@@ -25,7 +28,7 @@ class InitHook
    * @return void
    */
   public static function init(): void {
-    if (!empty(Config::getEntities())) {
+    if ( ! empty(Config::getEntities()) ) {
       foreach (Config::getEntities() as $entityName) {
         RegisterPostType::registerEntities($entityName);
         RegisterMetaBoxes::registerMetaboxes($entityName);
@@ -33,5 +36,15 @@ class InitHook
         RegisterActions::registerActions($entityName);
       }
     }
+
+    Shortcodes::register();
+    OptionsPage::register();
+
+    if ( ! empty(Config::getBlocks()) ) {
+      foreach (Config::getBlocks() as $blockName) {
+        RegisterBlock::registerBlock($blockName);
+      }
+    }
+
   }
 }

@@ -13,8 +13,12 @@ class Config
    * 
    * @var array
    */
-  public const array ENTITIES = [
+  private const array ENTITIES = [
     'ShortLink'
+  ];
+
+  private const array BLOCKS = [
+    'ShowShortLink'
   ];
 
   private const string TEXT_DOMAIN = 'short-links';
@@ -29,6 +33,16 @@ class Config
   public static function getEntities(): array
   {
     return self::ENTITIES;
+  }
+
+  /**
+   * Returns the list of registered gutenberg blocks names used by the plugin.
+   * 
+   * @return array List of gutenberg blocks names.
+   */
+  public static function getBlocks(): array
+  {
+    return self::BLOCKS;
   }
 
   /**

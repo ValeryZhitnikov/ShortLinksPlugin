@@ -2,6 +2,7 @@
 namespace ShortLinks;
 
 use ShortLinks\Config;
+use ShortLinks\Services\RegisterBlock;
 
 /**
  * Class OptionsPage
@@ -15,6 +16,15 @@ class OptionsPage
   private const string SETTING_SECTION = 'shortlinks_main_section';
 
   /**
+   * Get admin page slug
+   * 
+   * @return string
+   */
+  public static function getSlug(): string {
+    return self::OPTIONS_PAGE_SLUG;
+  }
+
+  /**
    * Registers admin hooks for menu and settings.
    *
    * @return void
@@ -23,6 +33,7 @@ class OptionsPage
   {
     add_action('admin_menu', [self::class, 'addMenuPage']);
     add_action('admin_init', [self::class, 'registerSettings']);
+    RegisterBlock::adminNotice();
   }
 
   /**
