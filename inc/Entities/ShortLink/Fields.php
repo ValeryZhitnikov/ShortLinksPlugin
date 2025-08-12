@@ -1,11 +1,22 @@
-<?php 
+<?php
 
 namespace ShortLinks\Entities\ShortLink;
+
 use ShortLinks\Interfaces\RegisterFields;
 use ShortLinks\Config;
 
+/**
+ * Class Fields
+ *
+ * Implements meta box registration, rendering, and saving for the ShortLink entity.
+ */
 class Fields implements RegisterFields
 {
+  /**
+   * Registers the meta box for the ShortLink post type.
+   *
+   * @return void
+   */
   public static function addMetaBox(): void {
     if (!current_user_can('edit_others_posts')) {
       return;
@@ -15,17 +26,25 @@ class Fields implements RegisterFields
       Constants::META_BOX_ID,
       __('Link info', Config::getTextDomain()),
       [self::class, 'renderMetaBox'],
-      Constants::ENTITY_LABEL,              
+      Constants::ENTITY_LABEL,
       'normal',
       'default'
     );
   }
 
+  /**
+   * Renders the meta box HTML.
+   *
+   * Displays fields for target URL, link closing status, click statistics, and nonce field.
+   *
+   * @param \WP_Post $post The current post object.
+   * @return void
+   */
   public static function renderMetaBox($post): void {
     $target_url = get_post_meta($post->ID, Constants::TARGET_URL_META_FIELD, true);
     $close = get_post_meta($post->ID, Constants::CLOSE_META_FIELD, true);
     $close_date = get_post_meta($post->ID, Constants::CLOSE_DATE_META_FIELD, true);
-    $close_date_info = $close_date ? __('Link deactivated', Config::getTextDomain()) . ' - '. $close_date  : '';
+    $close_date_info = $close_date ? __('Link deactivated', Config::getTextDomain()) . ' - ' . $close_date : '';
     $total_clicks = (int) get_post_meta($post->ID, Constants::TOTAL_CLICK_META_FIELD, true);
     $unique_clicks = (int) get_post_meta($post->ID, Constants::UNIQUE_CLICK_META_FIELD, true);
 
@@ -44,7 +63,7 @@ class Fields implements RegisterFields
       <input type="checkbox" id="%3\$s" name="%3\$s" %4\$s />%5\$s
       <p><strong>%10\$s:</strong> %6\$d</p>
       <p><strong>%11\$s:</strong> %7\$d</p>
-      HTML;
+    HTML;
 
     echo sprintf(
       $html,
@@ -62,12 +81,21 @@ class Fields implements RegisterFields
     );
   }
 
+  /**
+   * Saves meta box data when the post is saved.
+   *
+   * Validates user permissions, nonce, and sanitizes inputs.
+   *
+   * @param int $post_id The ID of the post being saved.
+   * @return void
+   */
   public static function saveMetaBox($post_id): void {
     if (!current_user_can('edit_others_posts')) {
       return;
     }
 
-    if (!isset($_POST[Constants::ENTITY_LABEL.'_meta_box_nonce']) || !wp_verify_nonce($_POST[Constants::ENTITY_LABEL.'_meta_box_nonce'], Constants::ENTITY_LABEL.'_save_meta_box')) {
+    if (!isset($_POST[Constants::ENTITY_LABEL . '_meta_box_nonce']) || 
+        !wp_verify_nonce($_POST[Constants::ENTITY_LABEL . '_meta_box_nonce'], Constants::ENTITY_LABEL . '_save_meta_box')) {
       return;
     }
 
@@ -88,13 +116,13 @@ class Fields implements RegisterFields
       update_post_meta($post_id, Constants::CLOSE_META_FIELD, $value);
     }
 
-    if ( isset( $_POST[Constants::CLOSE_META_FIELD] ) && 'on' == $_POST[Constants::CLOSE_META_FIELD] ) {
+    if (isset($_POST[Constants::CLOSE_META_FIELD]) && 'on' == $_POST[Constants::CLOSE_META_FIELD]) {
       $date_current = date(Constants::CLOSE_DATE_SAVE_FORMAT);
-      update_post_meta( $post_id, Constants::CLOSE_META_FIELD, Constants::CLOSE_META_VALUE );
-      update_post_meta( $post_id, Constants::CLOSE_DATE_META_FIELD, $date_current );
+      update_post_meta($post_id, Constants::CLOSE_META_FIELD, Constants::CLOSE_META_VALUE);
+      update_post_meta($post_id, Constants::CLOSE_DATE_META_FIELD, $date_current);
     } else {
-      delete_post_meta( $post_id, Constants::CLOSE_META_FIELD );
-      delete_post_meta( $post_id, Constants::CLOSE_DATE_META_FIELD );
+      delete_post_meta($post_id, Constants::CLOSE_META_FIELD);
+      delete_post_meta($post_id, Constants::CLOSE_DATE_META_FIELD);
     }
   }
 }

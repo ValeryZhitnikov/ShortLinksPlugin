@@ -1,27 +1,45 @@
-<?php 
+<?php
 
 namespace ShortLinks\Entities\ShortLink;
 
 use ShortLinks\Entities\ShortLink\Constants;
 use ShortLinks\Config;
 
+/**
+ * Class Actions
+ *
+ * Registers and handles actions related to the ShortLink entity,
+ * including redirecting short link URLs to their target URLs while
+ * tracking total and unique clicks.
+ */
 class Actions
-{ 
+{
+  /**
+   * Registers all actions for the entity.
+   *
+   * @return void
+   */
   public static function register(): void {
     self::addRedirects();
   }
   
+  /**
+   * Adds a redirect on the front-end for single ShortLink posts.
+   * Redirects to the target URL if the link is active,
+   * tracks total and unique clicks, and handles 404 for closed or invalid links.
+   *
+   * @return void
+   */
   public static function addRedirects(): void {
     add_action('template_redirect', function() {
-      if ( is_singular(Constants::ENTITY_LABEL) ) {
+      if (is_singular(Constants::ENTITY_LABEL)) {
         global $post;
         $post_id = $post->ID;
         $target_url = get_post_meta($post_id, Constants::TARGET_URL_META_FIELD, true);
         $close = get_post_meta($post_id, Constants::CLOSE_META_FIELD, true);
         $total_clicks = (int) get_post_meta($post_id, Constants::TOTAL_CLICK_META_FIELD, true);
         
-        if ($target_url && ! $close) {
-         
+        if ($target_url && !$close) {
           $utm_params = array_filter($_GET, function($key) {
             return strpos($key, 'utm_') === 0;
           }, ARRAY_FILTER_USE_KEY);

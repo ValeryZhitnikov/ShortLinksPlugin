@@ -4,6 +4,12 @@ namespace ShortLinks\Entities\ShortLink;
 
 use ShortLinks\Config;
 
+/**
+ * Class Columns
+ *
+ * Handles the registration, rendering, sorting, and ordering of custom columns
+ * for the ShortLink entity in the WordPress admin list table.
+ */
 class Columns
 {
   private const string URL = 'url';
@@ -14,6 +20,12 @@ class Columns
   private const string UNIQUE_CLICK_COUNT  = 'unique_click_count';
   private const string CLOSE_ICON = '<span style="color: red;">&#10060;</span>';
 
+  /**
+   * Adds custom columns to the admin list table for the entity.
+   *
+   * @param array $columns Existing columns.
+   * @return array Modified columns.
+   */
   public static function addColumns($columns): array {
     $columns[self::URL]                = __('URL', Config::getTextDomain());
     $columns[self::TARGET_URL]         = __('Target URL', Config::getTextDomain());
@@ -24,6 +36,13 @@ class Columns
     return $columns;
   }
 
+  /**
+   * Fills the custom columns with data for each post.
+   *
+   * @param string $column Column key.
+   * @param int $post_id Post ID.
+   * @return void
+   */
   public static function fillColumns(string $column, int $post_id): void {
     switch ($column) {
       case self::URL:
@@ -59,12 +78,24 @@ class Columns
     }
   }
 
+  /**
+   * Makes certain columns sortable in the admin list table.
+   *
+   * @param array $columns Columns that are sortable.
+   * @return array Modified sortable columns.
+   */
   public static function sortableColumns(array $columns): array {
     $columns[self::CLICK_COUNT]        = self::CLICK_COUNT;
     $columns[self::UNIQUE_CLICK_COUNT] = self::UNIQUE_CLICK_COUNT;
     return $columns;
   }
 
+  /**
+   * Modifies the query to support sorting by custom meta fields.
+   *
+   * @param \WP_Query $query The current WP_Query instance.
+   * @return void
+   */
   public static function orderby(\WP_Query $query): void {
     if (!is_admin()) {
       return;

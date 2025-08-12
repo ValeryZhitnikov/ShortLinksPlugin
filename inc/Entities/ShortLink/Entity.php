@@ -3,8 +3,21 @@
 namespace ShortLinks\Entities\ShortLink;
 
 use ShortLinks\Interfaces\RegisterEntity;
+
+/**
+ * Class Entity
+ *
+ * Registers the custom post type for the ShortLink entity.
+ */
 class Entity implements RegisterEntity
 {
+  /**
+   * Registers the custom post type with labels, capabilities, and settings.
+   *
+   * Uses constants from the Constants class to define names, labels, and permissions.
+   *
+   * @return void
+   */
   public static function register(): void {
     register_post_type(Constants::ENTITY_LABEL, [
       'label' => Constants::ENTITY_LABEL,
@@ -15,19 +28,19 @@ class Entity implements RegisterEntity
       'supports'     => ['title'],
       'has_archive'  => true,
       'menu_icon'    => Constants::MENU_ICON,
-      'public' => true,
-      'show_ui' => current_user_can('edit_others_posts'),
+      'public'       => true,
+      'show_ui'      => current_user_can('edit_others_posts'),
       'capability_type' => 'post',
       'capabilities' => [
-          'edit_post' => 'edit_others_posts',
-          'read_post' => 'read',
-          'delete_post' => 'delete_others_posts',
-          'edit_posts' => 'edit_others_posts',
-          'edit_others_posts' => 'edit_others_posts',
-          'delete_posts' => 'delete_others_posts',
-          'publish_posts' => 'publish_posts',
-          'read_private_posts' => 'read_private_posts',
-        ]
-      ]);
+          'edit_post'           => 'edit_others_posts',
+          'read_post'           => 'read',
+          'delete_post'         => 'delete_others_posts',
+          'edit_posts'          => 'edit_others_posts',
+          'edit_others_posts'   => 'edit_others_posts',
+          'delete_posts'        => 'delete_others_posts',
+          'publish_posts'       => 'publish_posts',
+          'read_private_posts'  => 'read_private_posts',
+      ],
+    ]);
   }
 }
